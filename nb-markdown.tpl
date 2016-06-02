@@ -29,7 +29,7 @@
 {% endblock stream %}
 
 {% block data_svg %}
-{{ output.data['image/svg+xml'] }}
+![](https://rawgit.com/natronics/JSBSim-Manager/master/{{ output.metadata.filenames['image/svg+xml'] | path2url }})
 {% endblock data_svg %}
 
 {% block data_png %}

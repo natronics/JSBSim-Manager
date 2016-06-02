@@ -1,0 +1,6 @@
+<svg height="210mm" id="svg2" version="1.1" viewBox="0 0 1052.3622047 744.09448819 " width="297mm" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg">
+  <g id="rocket" transform="translate(75,372) scale(698.6,698.6)">
+    <path d="M 0.48314,0.04026 0.00000,0.00000 0.48314,-0.04026" id="nose" style="fill:none;stroke:#000000;stroke-width:0.005px;"/>
+    <rect height="0.0805" id="Body" style="fill:none;stroke:#000000;stroke-width:0.005px;" width="0.8052" x="0.4831" y="-0.0403"/>
+  </g>
+</svg>
