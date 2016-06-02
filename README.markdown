@@ -22,7 +22,7 @@ Design parameters:
 
 
 Our computed engine will need 7.2 kg of propellent.
-It has a total impulse of 15,060 Ns. That would make it a ''(%) class motor.
+It has a total impulse of 15,060 Ns. That would make it a 'N'(47%) class motor.
 
 Generated JSBSim engine document:
 
@@ -48,6 +48,7 @@ Now we know how much propellent, guess the density and come up with some paramet
 
 
 
+Rocket length: 1.3 meters, diameter: 80.52 mm
 Generated JSBSim 'Aircraft' document:
 
 ```
@@ -71,12 +72,12 @@ Generated JSBSim 'Aircraft' document:
   <mass_balance>
     <pointmass name="Body">
       <form shape="tube">
-        <radius unit="M">0.0000</radius>
+        <radius unit="M">0.0403</radius>
         <length unit="M">0.8052</length>
       </form>
       <weight unit="KG">1.5000</weight>
       <location unit="M">
-        <x>0.4026</x>
+        <x>0.8858</x>
         <y>0.0</y>
         <z>0.0</z>
       </location>
