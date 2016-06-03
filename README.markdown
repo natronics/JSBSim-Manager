@@ -1,7 +1,7 @@
 
 # Build A Rocket And Launch It
 
-Proceduarlly build and sim a flight. This is my attempt to use the [open aerospace rocket documentation tool](https://open-aerospace.github.io/openrocketdoc/) to describe a rocket and generate JSBSim configuration to simulate its flight.
+Procedurally build and simulate a flight. This is my attempt to use the [open aerospace rocket documentation tool](https://open-aerospace.github.io/openrocketdoc/) to describe a rocket and generate JSBSim configuration to simulate its flight.
 
 View the raw jupyter notebook: [rocket.ipynb](https://github.com/natronics/JSBSim-Manager/blob/master/rocket.ipynb)
 
@@ -44,7 +44,7 @@ engine.thrust_avg = 1555.0
 engine.t_burn = 10.0
 ```
 
-Everthing else can be computed from that engine class:
+Everything else can be computed from that engine class:
 
 
 
@@ -88,9 +88,9 @@ Rocket Design parameters:
 
 
 
-Couputer rocket length: 1.6 meters, diameter: 81.39 mm
+Computed rocket length: 1.6 meters, diameter: 81.39 mm
 
-Generated diagram of the rocket, with a nosecone, fixed length payload section, and motor:
+Generated diagram of the rocket, with a nosecone, fixed length dummy payload section, and motor:
 
 
 
@@ -202,7 +202,7 @@ Generated JSBSim 'Aircraft' document:
 
 ## Build JSBSim Case
 
-JSBSim needs several files in directories with a particular file structure. We simply write the files above to the filesystem apropriate places. A generic `run.xml` and `init.xml` files are already here. They're almost completely independent from the rocket definitions, the only thing "hard coded" is the name of the rocket (which has to match the filename).
+JSBSim needs several files in directories with a particular file structure. We simply write the files above to the filesystem appropriate places. A generic `run.xml` and `init.xml` files are already here. They're almost completely independent from the rocket definitions, the only thing "hard coded" is the name of the rocket (which has to match the filename).
 
 
 
@@ -218,7 +218,7 @@ p = subprocess.Popen(["JSBSim", "--logdirectivefile=output_file.xml", "--script=
 
 
 
-## Analize Results
+## Analyze The Simulation Results
 
 Now we should have a datafile from the simulation!
 
