@@ -64,3 +64,4 @@ target/
 # JSBSim Generated
 aircraft
 engine
+data.csv

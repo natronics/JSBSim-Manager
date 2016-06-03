@@ -13,6 +13,10 @@ Then run jupyter to edit/run the document in your browser:
 
     $ jupyter notebook
 
+The idea is that you can make up some numbers ("what if I built a rocket with _this_ much thrust?") and this script will parametrically design an entire rocket. Then using openrocketdoc, generate a valid JSBSim case and run JSBSim for you, generating flight simulation output.
+
+Just put in numbers for the engine design and then run the notebook!
+
 
 ## Step 1. Design The Engine
 
@@ -34,7 +38,7 @@ All we need to do is create an openrocketdoc Engine with those basic numbers:
 ```python
 from openrocketdoc import document
 
-engine = document.Engine('Engine')
+engine = document.Engine('My Rocket Motor')
 engine.Isp = 214.0
 engine.thrust_avg = 1555.0
 engine.t_burn = 10.0
@@ -52,7 +56,7 @@ Generated JSBSim engine document:
 
 ```xml
 <?xml version="1.0" ?>
-<rocket_engine name="Engine">
+<rocket_engine name="Python Motor">
   <isp>214.0</isp>
   <builduptime>0.1</builduptime>
   <thrust_table name="propulsion/thrust_prop_remain" type="internal">
@@ -148,45 +152,85 @@ Generated JSBSim 'Aircraft' document:
     </pointmass>
   </mass_balance>
   <!--
+
   Propulsion: describe tanks, fuel and link to engine def files
+
   -->
   <propulsion>
     <tank type="FUEL">
       <location unit="M">
-        <x>0.0</x>
+        <x>1.1439</x>
         <y>0.0</y>
         <z>0.0</z>
       </location>
-      <radius unit="M">0</radius>
+      <radius unit="M">0.0407</radius>
       <grain_config type="CYLINDRICAL">
-        <length unit="M">0</length>
+        <length unit="M">0.8139</length>
         <bore_diameter unit="M">0</bore_diameter>
       </grain_config>
-      <capacity unit="KG">0</capacity>
-      <contents unit="KG">0</contents>
+      <capacity unit="KG">7.4096</capacity>
+      <contents unit="KG">7.4096</contents>
     </tank>
-    <engine file="Engine">
+    <engine file="python-motor">
       <feed>0</feed>
       <location unit="M">
-        <x>0.0</x>
+        <x>0.7369</x>
         <y>0.0</y>
         <z>0.0</z>
       </location>
-      <thruster file="Engine">
+      <thruster file="python-motor_nozzle">
         <location unit="M">
-          <x>0.0</x>
+          <x>1.5508</x>
           <y>0.0</y>
           <z>0.0</z>
         </location>
       </thruster>
     </engine>
   </propulsion>
+  <!--
+
+  Aerodynamics
+
+  -->
   <aerodynamics/>
   <ground_reactions/>
   <system/>
 </fdm_config>
 
 ```
+
+
+## Build JSBSim Case
+
+JSBSim needs several files in directories with a particular file structure. We simply write the files above to the filesystem apropriate places. A generic `run.xml` and `init.xml` files are already here. They're almost completely independent from the rocket definitions, the only thing "hard coded" is the name of the rocket (which has to match the filename).
+
+
+
+## Run JSBSim
+
+Now we can simulate the flight by invoking JSBSim (assuming you have it installed and in your path). It's as easy as this:
+
+```python
+import subprocess
+# Run JSBSim using Popen
+p = subprocess.Popen(["JSBSim", "--logdirectivefile=output_file.xml", "--script=run.xml"])
+```
+
+
+
+## Analize Results
+
+Now we should have a datafile from the simulation!
+
+
+
+The apogee (maximum altitude) of this flight was 225.5 km above sea level
+
+
+
+
+
+![](rocket_files/rocket_14_0.png)
 
 
 
