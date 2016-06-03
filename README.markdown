@@ -3,63 +3,101 @@
 
 Proceduarlly build and sim a flight. This is my attempt to use the [open aerospace rocket documentation tool](https://open-aerospace.github.io/openrocketdoc/) to describe a rocket and generate JSBSim configuration to simulate its flight.
 
-## Design Engine
+View the raw jupyter notebook: [rocket.ipynb](https://github.com/natronics/JSBSim-Manager/blob/master/rocket.ipynb)
+
+You can run it yourself by cloning this repo and install requirements:
+
+    $ pip install -r requirements.txt
+
+Then run jupyter to edit/run the document in your browser:
+
+    $ jupyter notebook
+
+
+## Step 1. Design The Engine
 
 Pick an engine design. Well define it based on a desired Isp, thrust, and burn time.
 
 
 
-Design parameters:
+Engine Design parameters:
 
       Input     |   Number  | Units 
  -------------- | --------: | :---- 
             Isp |     214.0 | s
-         Thrust |   1,255.0 | N
-      Burn Time |      12.0 | s
+         Thrust |   1,555.0 | N
+      Burn Time |      10.0 | s
+
+
+All we need to do is create an openrocketdoc Engine with those basic numbers:
+
+```python
+from openrocketdoc import document
+
+engine = document.Engine('Engine')
+engine.Isp = 214.0
+engine.thrust_avg = 1555.0
+engine.t_burn = 10.0
+```
+
+Everthing else can be computed from that engine class:
 
 
 
 
-
-Our computed engine will need 7.2 kg of propellent.
-It has a total impulse of 15,060 Ns. That would make it a 'N'(47%) class motor.
+Our computed engine will need 7.4 kg of propellent.
+It has a total impulse of 15,550 Ns. That would make it a 'N'(52%) class motor.
 
 Generated JSBSim engine document:
 
-```
+```xml
 <?xml version="1.0" ?>
 <rocket_engine name="Engine">
   <isp>214.0</isp>
   <builduptime>0.1</builduptime>
   <thrust_table name="propulsion/thrust_prop_remain" type="internal">
     <tableData>
-      0.000 282.135
-      5.274 282.135
-      10.547 282.135
+      0.000 349.578
+      5.445 349.578
+      10.890 349.578
     </tableData>
   </thrust_table>
 </rocket_engine>
- ```
+
+```
 
 
-## Build Rocket
+## Step 2. Build The Rocket
 
-Now we know how much propellent, guess the density and come up with some parametric rocket design.
-
-
-
-Rocket length: 1.3 meters, diameter: 80.52 mm
+Now we know how much propellent, guess the density and come up with some parametric rocket design. If we compute some numbers based on a guess of the density of our propellent, we can build up a full rocket desgin from our `engine`. The only hardcoded magic is a prefered lenght-to-diameter ratio.
 
 
 
-![](https://rawgit.com/natronics/JSBSim-Manager/master/rocket_files/rocket_4_1.svg)
+Rocket Design parameters:
+
+          Input         |   Number  | Units 
+ ---------------------- | --------: | :---- 
+     Propellent Density |   1,555.0 | kg/m3
+        Motor L/D ratio |      10.0 | 
+     Nosecone L/D ratio |       5.0 | 
+
+
+
+
+Couputer rocket length: 1.6 meters, diameter: 81.39 mm
+
+Generated diagram of the rocket, with a nosecone, fixed length payload section, and motor:
+
+
+
+![](https://rawgit.com/natronics/JSBSim-Manager/master/rocket_files/rocket_6_1.svg)
 
 
 
 
 Generated JSBSim 'Aircraft' document:
 
-```
+```xml
 <?xml version="1.0" ?>
 <fdm_config name="Rocket" release="ALPHA" version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://jsbsim.sourceforge.net/JSBSim.xsd">
   <fileheader/>
@@ -86,24 +124,24 @@ Generated JSBSim 'Aircraft' document:
   <mass_balance>
     <pointmass name="Payload">
       <form shape="tube">
-        <radius unit="M">0.0403</radius>
+        <radius unit="M">0.0407</radius>
         <length unit="M">0.3300</length>
       </form>
       <weight unit="KG">2.5000</weight>
       <location unit="M">
-        <x>0.6481</x>
+        <x>0.5719</x>
         <y>0.0</y>
         <z>0.0</z>
       </location>
     </pointmass>
     <pointmass name="Body">
       <form shape="tube">
-        <radius unit="M">0.0403</radius>
-        <length unit="M">0.8052</length>
+        <radius unit="M">0.0407</radius>
+        <length unit="M">0.8139</length>
       </form>
       <weight unit="KG">1.5000</weight>
       <location unit="M">
-        <x>1.2158</x>
+        <x>1.1439</x>
         <y>0.0</y>
         <z>0.0</z>
       </location>
