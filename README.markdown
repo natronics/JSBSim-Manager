@@ -106,24 +106,28 @@ Generated JSBSim 'Aircraft' document:
 <fdm_config name="Rocket" release="ALPHA" version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://jsbsim.sourceforge.net/JSBSim.xsd">
   <fileheader/>
   <!--
-  Primary Metrics (Size of vehicle)
+
+  Primary Metrics (Ovearall size of vehicle)
+
   -->
   <metrics>
-    <wingarea unit="M2">0.0</wingarea>
-    <wingspan unit="M">0.0</wingspan>
+    <wingarea unit="M2">0.0052</wingarea>
+    <wingspan unit="M">0.0814</wingspan>
     <chord unit="M">0.0</chord>
     <htailarea unit="M2">0.0</htailarea>
     <htailarm unit="M">0.0</htailarm>
     <vtailarea unit="M2">0.0</vtailarea>
     <vtailarm unit="M">0.0</vtailarm>
     <location name="AERORP" unit="M">
-      <x>0.0</x>
+      <x>1.5508</x>
       <y>0.0</y>
       <z>0.0</z>
     </location>
   </metrics>
   <!--
+
   Mass Elements: describe dry mass of vehicle
+
   -->
   <mass_balance>
     <pointmass name="Payload">
@@ -192,7 +196,21 @@ Generated JSBSim 'Aircraft' document:
   Aerodynamics
 
   -->
-  <aerodynamics/>
+  <aerodynamics>
+    <axis name="DRAG">
+      <function name="aero/force/drag">
+        <description>Coefficient of Drag</description>
+        <product>
+          <property>aero/qbar-psf</property>
+          <property>metrics/Sw-sqft</property>
+          <value>0.600000</value>
+        </product>
+      </function>
+    </axis>
+  </aerodynamics>
+  <!--
+  Ground reactions and systems are not auto-generated.
+  -->
   <ground_reactions/>
   <system/>
 </fdm_config>
@@ -224,13 +242,19 @@ Now we should have a datafile from the simulation!
 
 
 
-The apogee (maximum altitude) of this flight was 225.5 km above sea level
+The apogee (maximum altitude) of this flight was 17.8 km above sea level
 
 
 
 
 
 ![](rocket_files/rocket_14_0.png)
+
+
+
+
+
+![](rocket_files/rocket_15_0.png)
 
 
 
