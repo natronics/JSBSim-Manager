@@ -1,6 +1,5 @@
 import threading
 import subprocess
-import time
 import os
 import xml.etree.ElementTree as ET
 import xml.dom.minidom as minidom
@@ -25,6 +24,7 @@ class JSBSimRunner(threading.Thread):
         self.thread_id = thread_id
         self.n_threads = n_threads
         self.thread_path = "thread_%d" % self.thread_id
+        self.run_times = 1
 
         self.make_rocket = rocket_gen
 
@@ -39,7 +39,7 @@ class JSBSimRunner(threading.Thread):
         os.chdir(self.thread_path)
 
         # Run N number of times
-        for i in range(1):
+        for i in range(self.run_times):
 
             # kill thread
             if self._stop_event.is_set():
@@ -55,8 +55,16 @@ class JSBSimRunner(threading.Thread):
             self.write_case_output(i)
 
             # Run!
-            p = subprocess.Popen(["JSBSim", "--logdirectivefile=output.xml", "--script=run.xml"])
-            time.sleep(5)
+            proc = subprocess.Popen(["JSBSim", "--logdirectivefile=output.xml", "--script=run.xml"], stdout=subprocess.PIPE)
+            for line in proc.stdout:
+                current_line = line.decode()
+
+                # debug:
+                # print(current_line, end="")
+
+                # end at apogee rather than waiting for sim to run forever
+                if "APOGEE" in current_line and "executed at time" in current_line:
+                    proc.kill()
 
     def stop(self):
         self._stop_event.set()
@@ -204,9 +212,8 @@ class JSBSimRunner(threading.Thread):
         event_apogee = ET.SubElement(run, 'event')
         event_apogee.attrib['name'] = "APOGEE"
         ET.SubElement(event_apogee, 'condition').text = "velocities/v-down-fps gt 1"
-        ET.SubElement(event_ignite, 'notify')
+        ET.SubElement(event_apogee, 'notify')
 
         # pretty print
         xmldoc = minidom.parseString(ET.tostring(doc, encoding="UTF-8"))
         return xmldoc.toprettyxml(indent="  ")
-
