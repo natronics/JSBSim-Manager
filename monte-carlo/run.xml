@@ -6,7 +6,7 @@
   <use aircraft="rocket" initialize="../../init" />
 
   <!-- Run simulation for 300 seconds -->
-  <run start="0.0" end="200" dt="0.001">
+  <run start="0.0" end="100" dt="0.001">
     <description>
       Sim a Generated Rocket
     </description>
