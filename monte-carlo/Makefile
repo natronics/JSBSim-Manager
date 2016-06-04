@@ -1,5 +1,5 @@
 README.markdown: monte-carlo.ipynb
-	jupyter nbconvert --execute --to=markdown --template="nb-markdown.tpl" $^
+	jupyter nbconvert --execute --config=convert_config.py --to=markdown --template="nb-markdown.tpl" $^
 	mv monte-carlo.md README.markdown
 
 clean:
