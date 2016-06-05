@@ -111,4 +111,4 @@ def rocket():
     return rocket
 
 #print(rocket())
-manager.run(rocket, number_of_sims=100, number_of_threads=4)
+manager.run(rocket, number_of_sims=5000, number_of_threads=4)
