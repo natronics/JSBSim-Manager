@@ -35,9 +35,6 @@ class JSBSimRunner(threading.Thread):
         # Build file structure:
         self.setup_case_path(rocket)
 
-        # Go to there
-        os.chdir(self.thread_path)
-
         # Run N number of times
         for i in range(self.run_times):
 
@@ -55,7 +52,13 @@ class JSBSimRunner(threading.Thread):
             self.write_case_output(i)
 
             # Run!
-            proc = subprocess.Popen(["JSBSim", "--logdirectivefile=output.xml", "--script=run.xml"], stdout=subprocess.PIPE)
+            proc = subprocess.Popen([
+                "JSBSim",
+                "--logdirectivefile=output.xml",
+                "--script=run.xml",
+                "--root=" + self.thread_path
+                ], stdout=subprocess.PIPE
+            )
             for line in proc.stdout:
                 current_line = line.decode()
 
@@ -87,13 +90,13 @@ class JSBSimRunner(threading.Thread):
         thrust.text = "forces/fbx-prop-lbs"
 
         xmldoc = minidom.parseString(ET.tostring(output_file, encoding="UTF-8"))
-        with open("output.xml", 'w') as outfile:
+        with open(os.path.join(self.thread_path, "output.xml"), 'w') as outfile:
             outfile.write(xmldoc.toprettyxml(indent="  "))
 
     def write_case(self, rocket):
 
         # Write aircraft
-        with open(os.path.join("aircraft", rocket.name_slug, rocket.name_slug + ".xml"), 'w') as airfile:
+        with open(os.path.join(self.thread_path, "aircraft", rocket.name_slug, rocket.name_slug + ".xml"), 'w') as airfile:
             airfile.write(writers.JSBSimAircraft.dump(rocket))
 
         # Write init conditions
@@ -134,7 +137,7 @@ class JSBSimRunner(threading.Thread):
         elev.text = "250"
 
         xmldoc = minidom.parseString(ET.tostring(init_file, encoding="UTF-8"))
-        with open(os.path.join("aircraft", rocket.name_slug, "init.xml"), 'w') as initfile:
+        with open(os.path.join(self.thread_path, "aircraft", rocket.name_slug, "init.xml"), 'w') as initfile:
             initfile.write(xmldoc.toprettyxml(indent="  "))
 
         # Write engine files
@@ -143,9 +146,9 @@ class JSBSimRunner(threading.Thread):
                 for subcon in comp.components:
                     if type(subcon) is document.Engine:
                         engine = subcon
-                        with open(os.path.join("engine", engine.name_slug + ".xml"), 'w') as enginefile:
+                        with open(os.path.join(self.thread_path, "engine", engine.name_slug + ".xml"), 'w') as enginefile:
                             enginefile.write(writers.JSBSimEngine.dump(engine))
-                        with open(os.path.join("engine", engine.name_slug + "_nozzle.xml"), 'w') as nozzlefile:
+                        with open(os.path.join(self.thread_path, "engine", engine.name_slug + "_nozzle.xml"), 'w') as nozzlefile:
                             nozzle_file = ET.Element('nozzle')
                             nozzle_file.attrib['name'] = "Nozzle"
                             area = ET.SubElement(nozzle_file, 'area')
