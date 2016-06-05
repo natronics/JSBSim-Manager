@@ -1,15 +1,27 @@
 #!/usr/bin/env python
 import manager
 import rocket
-
+import random
 
 def gen():
-    r = rocket.Rocket(200, 1200, 15000, [0.6])
+
+    # starting values, an N2501
+    isp     =   179
+    thrust  =  2510
+    impulse = 15280
+
+    # Jumble
+    isp = random.gauss(isp, isp*0.03)  # 3% spread
+    thrust = random.gauss(thrust, thrust*0.10)  # 10% spread
+    impulse = random.uniform(impulse - 200, impulse + 200)
+
+    cd_avg = random.gauss(0.6, 0.1)
+    r = rocket.Rocket(isp, thrust, impulse, [cd_avg])
     return r.rocket
 
 
-number_of_sims = 30
-number_of_threads = 3
+number_of_sims = 20
+number_of_threads = 4
 
 threads = []
 

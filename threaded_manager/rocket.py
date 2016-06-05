@@ -47,7 +47,7 @@ class Rocket(object):
         # Body section the size of the engine
         body = document.Bodytube(
             "Body",  # Name
-            10.0,     # mass
+            20.0,     # mass
             engine.length,
             diameter=engine.diameter,
         )
