@@ -33,10 +33,10 @@ body = document.Bodytube(
 def rocket():
 
     # parametric thrust curve:
-    peak_thrust = 4000
-    delay_time = 1.0
-    min_thrust = 0.5
-    growth_rate = 1.1
+    peak_thrust = random.uniform(500, 2500)
+    delay_time = random.uniform(0.5, 8.0)
+    min_thrust = random.uniform(0.15, 0.9)
+    growth_rate = random.uniform(1.01, 2.0)
 
     engine = document.Engine("Motor")
     engine.m_prop = 10.0 # kg
@@ -49,7 +49,7 @@ def rocket():
     thrust = 1.0
     thrustcurve = []
     itot = 0
-    for i in range(100):
+    for i in range(500):
         t = i*0.1
 
         if t > delay_time:
@@ -88,4 +88,4 @@ def rocket():
     return rocket
 
 #print(rocket())
-manager.run(rocket, number_of_sims=1, number_of_threads=1)
+manager.run(rocket, number_of_sims=100, number_of_threads=4)
