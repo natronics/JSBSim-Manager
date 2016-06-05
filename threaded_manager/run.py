@@ -5,22 +5,23 @@ import random
 
 def gen():
 
-    # starting values, an N2501
-    isp     =   179
-    thrust  =  2510
-    impulse = 15280
+    # starting values, real numbers for an N2501 motor
+    isp     =   179    # s
+    thrust  =  2510    # N
+    impulse = 15280    # N*s
+    CD      =     0.6
 
-    # Jumble
-    isp = random.gauss(isp, isp*0.03)  # 3% spread
-    thrust = random.gauss(thrust, thrust*0.10)  # 10% spread
-    impulse = random.uniform(impulse - 200, impulse + 200)
+    # Randomize
+    isp = random.gauss(isp, isp*0.03)                       # 3% spread
+    thrust = random.gauss(thrust, thrust*0.10)              # 10% spread
+    impulse = random.uniform(impulse - 200, impulse + 200)  # +/- 200 N*s
+    cd_avg = random.gauss(0.6, 0.1)                         # ~16% spread
 
-    cd_avg = random.gauss(0.6, 0.1)
     r = rocket.Rocket(isp, thrust, impulse, [cd_avg])
     return r.rocket
 
 
-number_of_sims = 20
+number_of_sims = 4000
 number_of_threads = 4
 
 threads = []
