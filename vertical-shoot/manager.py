@@ -88,6 +88,12 @@ class JSBSimRunner(threading.Thread):
         thrust = ET.SubElement(output_file, 'property')
         thrust.attrib['caption'] = "Thrust [lbf]"
         thrust.text = "forces/fbx-prop-lbs"
+        qbar = ET.SubElement(output_file, 'property')
+        qbar.attrib['caption'] = "QBar [psf]"
+        qbar.text = "/fdm/jsbsim/aero/qbar-psf"
+        accel = ET.SubElement(output_file, 'property')
+        accel.attrib['caption'] = "Acceel [fps2]"
+        accel.text = "accelerations/udot-ft_sec2"
 
         xmldoc = minidom.parseString(ET.tostring(output_file, encoding="UTF-8"))
         with open(os.path.join(self.thread_path, "output.xml"), 'w') as outfile:
